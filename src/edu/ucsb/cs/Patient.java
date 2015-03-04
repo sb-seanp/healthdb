@@ -19,16 +19,16 @@ public class Patient {
     private int payerId;
 
     public Patient(int id, String patientRole, String givenName, String familyName, String suffix, String gender,Date
-            birthtime, String providerId, Date creationDate, int payerId){
-        this.patientId = id;
-        this.patientRole = patientRole;
-        this.givenName = givenName;
-        this.familyName = familyName;
-        this.suffix = suffix;
-        this.gender = gender;
-        this.birthtime = birthtime;
-        this.providerId = providerId;
-        this.creationDate = creationDate;
-        this.payerId = payerId;
+            birthtime, String providerId, Date creationDate, int payerId) {
+        patientId = id;
+        patientRole = patientRole;
+        givenName = givenName;
+        familyName = familyName;
+        suffix = suffix;
+        gender = gender;
+        birthtime = birthtime;
+        providerId = providerId;
+        creationDate = creationDate;
+        payerId = payerId;
     }
 }
