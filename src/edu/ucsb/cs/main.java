@@ -184,6 +184,24 @@ public class main {
                 patientSt.executeUpdate();
 
                 // Guardian
+                Guardian guardian = new Guardian(Integer.parseInt(guardianNo), givenName, familyName, phone, address,
+                        city, state, Integer.parseInt(zip), relationship);
+
+                PreparedStatement guardianSt = destDb.prepareStatement(
+                        "INSERT INTO Guardian " + "(GuardianNo, GivenName, FamilyName, Phone, Address, City, State, Zip) "
+                                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)"
+                );
+
+                guardianSt.setInt(1, guardian.getGuardianNo());
+                guardianSt.setString(2, guardian.getGivenName());
+                guardianSt.setString(3, guardian.getFamilyName());
+                guardianSt.setString(4, guardian.getPhone());
+                guardianSt.setString(5, guardian.getAddress());
+                guardianSt.setString(6, guardian.getCity());
+                guardianSt.setString(7, guardian.getState());
+                guardianSt.setInt(8, guardian.getZip());
+
+                guardianSt.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
