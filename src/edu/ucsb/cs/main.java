@@ -30,7 +30,6 @@ public class main {
         String menuInput = in.next();
         if(menuInput.equals("0")) {
             System.out.println("Exiting HIS");
-            return;
         }
         else if(menuInput.equals("1")) {
             adminConsole();
@@ -43,7 +42,6 @@ public class main {
         }
         else {
             System.out.println("Error; exiting");
-            return;
         }
     }
 
@@ -217,6 +215,22 @@ public class main {
                 authorSt.setString(4, author.getAuthorLastName());
 
                 authorSt.executeUpdate();
+
+                // Insurance Company
+                InsuranceCompany ic = new InsuranceCompany(Integer.parseInt(payerId), name, policyHolder, policyType,
+                        purpose);
+
+                PreparedStatement icSt = destDb.prepareStatement(
+                        "INSERT INTO InsuranceCompany " + "(PayerId, Name, Purpose, PolicyType, PolicyHolder) " + "VALUES(?, ?, ?, ?, ?)"
+                );
+
+                icSt.setInt(1, ic.getPayerId());
+                icSt.setString(2, ic.getName());
+                icSt.setString(3, ic.getPurpose());
+                icSt.setString(4, ic.getPolicyType());
+                icSt.setString(5, ic.getPolicyHolder());
+
+                icSt.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();

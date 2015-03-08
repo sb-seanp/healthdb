@@ -17,4 +17,44 @@ public class InsuranceCompany {
         policyType = policyType;
         purpose = purpose;
     }
+
+    public int getPayerId() {
+        return payerId;
+    }
+
+    public void setPayerId(int payerId) {
+        this.payerId = payerId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPolicyHolder() {
+        return policyHolder;
+    }
+
+    public void setPolicyHolder(String policyHolder) {
+        this.policyHolder = policyHolder;
+    }
+
+    public String getPolicyType() {
+        return policyType;
+    }
+
+    public void setPolicyType(String policyType) {
+        this.policyType = policyType;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
 }
