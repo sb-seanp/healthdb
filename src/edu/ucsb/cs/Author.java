@@ -8,13 +8,43 @@ public class Author {
     private String authorTitle;
     private String authorFirstName;
     private String authorLastName;
-    private String ParticipatingRole;
 
     public Author(int id, String title, String firstName, String lastName, String role) {
-        authorId = id;
-        authorTitle = title;
-        authorFirstName = firstName;
-        authorLastName = lastName;
-        ParticipatingRole = role;
+        this.authorId = id;
+        this.authorTitle = title;
+        this.authorFirstName = firstName;
+        this.authorLastName = lastName;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
+    }
+
+    public String getAuthorTitle() {
+        return authorTitle;
+    }
+
+    public void setAuthorTitle(String authorTitle) {
+        this.authorTitle = authorTitle;
+    }
+
+    public String getAuthorFirstName() {
+        return authorFirstName;
+    }
+
+    public void setAuthorFirstName(String authorFirstName) {
+        this.authorFirstName = authorFirstName;
+    }
+
+    public String getAuthorLastName() {
+        return authorLastName;
+    }
+
+    public void setAuthorLastName(String authorLastName) {
+        this.authorLastName = authorLastName;
     }
 }

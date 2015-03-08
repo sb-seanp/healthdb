@@ -202,6 +202,21 @@ public class main {
                 guardianSt.setInt(8, guardian.getZip());
 
                 guardianSt.executeUpdate();
+
+                // Author
+                Author author = new Author(Integer.parseInt(authorId), authorTitle, authorFirstName, authorLastName,
+                        participatingRole);
+
+                PreparedStatement authorSt = destDb.prepareStatement(
+                        "INSERT INTO Author " + "(AuthorId, AuthorTitle, AuthorFirstName, AuthorLastName) " + "VALUES(?, ?, ?, ?)"
+                );
+
+                authorSt.setInt(1, author.getAuthorId());
+                authorSt.setString(2, author.getAuthorTitle());
+                authorSt.setString(3, author.getAuthorFirstName());
+                authorSt.setString(4, author.getAuthorLastName());
+
+                authorSt.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
