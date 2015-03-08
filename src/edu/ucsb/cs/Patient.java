@@ -4,8 +4,6 @@ package edu.ucsb.cs;
  * Created by sean on 3/3/15.
  */
 
-import java.util.Date;
-
 public class Patient {
     private int patientId;
     private String patientRole;
@@ -13,22 +11,102 @@ public class Patient {
     private String familyName;
     private String suffix;
     private String gender;
-    private Date birthtime;
+    private String birthtime;
     private String providerId;
-    private Date creationDate;
+    private String creationDate;
     private int payerId;
 
-    public Patient(int id, String patientRole, String givenName, String familyName, String suffix, String gender,Date
-            birthtime, String providerId, Date creationDate, int payerId) {
-        patientId = id;
-        patientRole = patientRole;
-        givenName = givenName;
-        familyName = familyName;
-        suffix = suffix;
-        gender = gender;
-        birthtime = birthtime;
-        providerId = providerId;
-        creationDate = creationDate;
-        payerId = payerId;
+    public Patient(int id, String patientRole, String givenName, String familyName, String suffix, String gender, String
+            birthtime, String providerId, String creationDate, int payerId) {
+        this.patientId = id;
+        this.patientRole = patientRole;
+        this.givenName = givenName;
+        this.familyName = familyName;
+        this.suffix = suffix;
+        this.gender = gender;
+        this.birthtime = birthtime;
+        this.providerId = providerId;
+        this.creationDate = creationDate;
+        this.payerId = payerId;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getPatientRole() {
+        return patientRole;
+    }
+
+    public void setPatientRole(String patientRole) {
+        this.patientRole = patientRole;
+    }
+
+    public String getGivenName() {
+        return givenName;
+    }
+
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
+    }
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBirthtime() {
+        return birthtime;
+    }
+
+    public void setBirthtime(String birthtime) {
+        this.birthtime = birthtime;
+    }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public int getPayerId() {
+        return payerId;
+    }
+
+    public void setPayerId(int payerId) {
+        this.payerId = payerId;
     }
 }

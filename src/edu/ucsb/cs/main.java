@@ -154,10 +154,36 @@ public class main {
                 String scheduledDate    = resultSet.getString("ScheduledDate");
 
                 // Get missing info
-                String currentDate = getDate();
-                String suffix = "";
-                String gender = "";
-                String patientRole = "";
+                String currentDate  = getDate();
+                String suffix       = "";
+                String gender       = "";
+                String patientRole  = "";
+
+                // ****Class it up then ship it out****
+
+                // Patient
+                Patient patient = new Patient(Integer.parseInt(patientId), patientRole, givenName, familyName,
+                        suffix, gender, birthTime, providerId, currentDate, Integer.parseInt(payerId));
+
+                PreparedStatement patientSt = destDb.prepareStatement(
+                        "INSERT INTO Patient " + "(PatientId, PatientRole, GivenName, FamilyName, Suffix, Gender, " +
+                                "Birthtime, ProviderId, xmlHealthCreation, PayerId) " + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                );
+
+                patientSt.setInt(1, patient.getPatientId());
+                patientSt.setString(2, patient.getPatientRole());
+                patientSt.setString(3, patient.getGivenName());
+                patientSt.setString(4, patient.getFamilyName());
+                patientSt.setString(5, patient.getSuffix());
+                patientSt.setString(6, patient.getGender());
+                patientSt.setString(7, patient.getBirthtime());
+                patientSt.setString(8, patient.getProviderId());
+                patientSt.setString(9, patient.getCreationDate());
+                patientSt.setInt(10, patient.getPayerId());
+
+                patientSt.executeUpdate();
+
+                // Guardian
             }
         } catch (SQLException e) {
             e.printStackTrace();
