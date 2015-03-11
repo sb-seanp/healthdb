@@ -248,7 +248,21 @@ public class main {
 
                 famSt.executeUpdate();
 
-                // 
+                // Allergies
+                Allergies alg = new Allergies(Integer.parseInt(patientId), substance, reaction, status);
+
+                PreparedStatement algSt = destDb.prepareStatement(
+                        "INSERT INTO Allergies" + "(patientId, substance, reaction, status) " + "VALUES(?,?,?,?)"
+                );
+
+                algSt.setInt(1, alg.getPatientId());
+                algSt.setString(2, alg.getSubstance());
+                algSt.setString(3, alg.getReaction());
+                algSt.setString(4, alg.getStatus());
+
+                algSt.executeUpdate();
+
+                // Lab Test Report
             }
         } catch (SQLException e) {
             e.printStackTrace();

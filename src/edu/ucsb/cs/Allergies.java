@@ -15,4 +15,36 @@ public class Allergies {
         reaction = reaction;
         status = status;
     }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getSubstance() {
+        return substance;
+    }
+
+    public void setSubstance(String substance) {
+        this.substance = substance;
+    }
+
+    public String getReaction() {
+        return reaction;
+    }
+
+    public void setReaction(String reaction) {
+        this.reaction = reaction;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
