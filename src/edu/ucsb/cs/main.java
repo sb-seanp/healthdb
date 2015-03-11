@@ -231,6 +231,24 @@ public class main {
                 icSt.setString(5, ic.getPolicyHolder());
 
                 icSt.executeUpdate();
+
+                // Family History
+                FamilyHistory fam = new FamilyHistory(Integer.parseInt(relativeId), relationship, Integer.parseInt
+                        (age), diagnosis);
+
+                PreparedStatement famSt = destDb.prepareStatement(
+                        "INSERT INTO FamilyHistory" + "(relativeId, relationship, age, diagnosis) " + "VALUES(?,?,?," +
+                                "?)"
+                );
+
+                famSt.setInt(1, fam.getRelativeId());
+                famSt.setString(2, fam.getRelationship());
+                famSt.setInt(3, fam.getAge());
+                famSt.setString(4, fam.getDiagnosis());
+
+                famSt.executeUpdate();
+
+                // 
             }
         } catch (SQLException e) {
             e.printStackTrace();

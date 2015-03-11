@@ -15,4 +15,36 @@ public class FamilyHistory {
         age = age;
         diagnosis = diagnosis;
     }
+
+    public int getRelativeId() {
+        return relativeId;
+    }
+
+    public void setRelativeId(int relativeId) {
+        this.relativeId = relativeId;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
 }
