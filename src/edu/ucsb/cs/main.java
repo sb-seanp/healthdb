@@ -45,6 +45,17 @@ public class main {
         }
     }
 
+    public void displayPatientMenu() {
+        System.out.println("1: View my medical record.");
+        System.out.println("2: View my author's information.");
+        System.out.println("3: View my guardian's information.");
+        System.out.println("4: View my allergies.");
+        System.out.println("5: View my lab test reports.");
+        System.out.println("6: View my medical plans.");
+        System.out.println("7: Edit my information.");
+        System.out.println("8: Edit my guardian's information.");
+    }
+
     // Get the current date and time for whatever needs it
     public String getDate() {
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
@@ -310,6 +321,29 @@ public class main {
     }
 
     public void patientConsole() {
+        try {
+            Scanner con = new Scanner(System.in);
+
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = null;
+
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/HealthInformationSystem?user=root%password=");
+
+            System.out.println("USER: PATIENT");
+            System.out.println("Enter user ID: ");
+            String patientId;
+            patientId = con.next();
+
+            String input;
+            System.out.println("What would you like to do?");
+            displayPatientMenu();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return;
     }
 }
