@@ -281,6 +281,19 @@ public class main {
                 ltrSt.setString(7, ltr.getReferenceRangeLow());
 
                 ltrSt.executeUpdate();
+
+                // Plan
+                Plan plan = new Plan(Integer.parseInt(planId), activity, scheduledDate);
+
+                PreparedStatement planSt = destDb.prepareStatement(
+                        "INSERT INTO Plan " + "(PlanId, Activity, ScheduledDate) " + "VALUES(?,?,?)"
+                );
+
+                planSt.setInt(1, plan.getPlanId());
+                planSt.setString(2, plan.getActivity());
+                planSt.setString(3, plan.getDate());
+
+                planSt.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
