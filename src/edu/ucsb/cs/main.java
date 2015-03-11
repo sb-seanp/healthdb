@@ -237,7 +237,7 @@ public class main {
                         (age), diagnosis);
 
                 PreparedStatement famSt = destDb.prepareStatement(
-                        "INSERT INTO FamilyHistory" + "(relativeId, relationship, age, diagnosis) " + "VALUES(?,?,?," +
+                        "INSERT INTO FamilyHistory " + "(id, Relationship, Age, Diagnosis) " + "VALUES(?,?,?," +
                                 "?)"
                 );
 
@@ -252,7 +252,7 @@ public class main {
                 Allergies alg = new Allergies(Integer.parseInt(patientId), substance, reaction, status);
 
                 PreparedStatement algSt = destDb.prepareStatement(
-                        "INSERT INTO Allergies" + "(patientId, substance, reaction, status) " + "VALUES(?,?,?,?)"
+                        "INSERT INTO Allergies " + "(PatientId, Substance, Reaction, Status) " + "VALUES(?,?,?,?)"
                 );
 
                 algSt.setInt(1, alg.getPatientId());
@@ -263,6 +263,24 @@ public class main {
                 algSt.executeUpdate();
 
                 // Lab Test Report
+                LabTestReport ltr = new LabTestReport(Integer.parseInt(labTestResultId), Integer.parseInt
+                        (patientVisitId), labTestPerformedDate, labTestType, Integer.parseInt(testResultValue),
+                        referenceRangeHigh, referenceRangeLow);
+
+                PreparedStatement ltrSt = destDb.prepareStatement(
+                        "INSERT INTO LabTestReport " + "(LabTestResultId, PatientVisitId, LabTestPerformedDate, " +
+                                "LabTestType, TestResultValue, ReferenceRangeHigh, ReferenceRangeLow) " + "VALUES(?,?,?,?,?,?,?)"
+                );
+
+                ltrSt.setInt(1, ltr.getLabTestResultId());
+                ltrSt.setInt(2, ltr.getPatientVisitId());
+                ltrSt.setString(3, ltr.getLabTestPerformedDate());
+                ltrSt.setString(4, ltr.getLabTestType());
+                ltrSt.setInt(5, ltr.getLabTestResultId());
+                ltrSt.setString(6, ltr.getReferenceRangeHigh());
+                ltrSt.setString(7, ltr.getReferenceRangeLow());
+
+                ltrSt.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
