@@ -170,7 +170,7 @@ public class Main {
         }
     }
 
-    public static void viewNumberPatientsM1Allergy(Connection db) {
+    public static void viewNumberPatientsMore1Allergy(Connection db) {
         try {
             Statement statement = db.createStatement();
             String temp = "SELECT PatientId FROM Patients WHERE PatientId IN (SELECT Patients.PatientId FROM Patients JOIN Allergies ON Patients.PatientId=Allergies.PatientId GROUP BY Patients.PatientId HAVING COUNT(Patients.PatientId) > 1);";
@@ -184,7 +184,7 @@ public class Main {
         }
     }
 
-    public static void viewAuthorsM1Patient(Connection db) {
+    public static void viewAuthorsMore1Patient(Connection db) {
         try {
             Statement statement = db.createStatement();
             String temp = "SELECT distinct AuthorId FROM AuthorsPatients WHERE AuthorId IN (SELECT AuthorId From AuthorsPatients GROUP BY AuthorId HAVING COUNT(AuthorId) > 1);";
@@ -397,7 +397,7 @@ public class Main {
 
 
             // Get result of query
-            resultSet = statement.executeQuery("select * from " + source + "." + table);
+            resultSet = statement.executeQuery("SELECT * FROM " + source + "." + table);
 
             // Connect to destination database
             destDb = DriverManager.getConnection(
@@ -736,11 +736,11 @@ public class Main {
                 adminConsole();
             }
             else if(input.equals("2")) {
-                viewNumberPatientsM1Allergy(connection);
+                viewNumberPatientsMore1Allergy(connection);
                 adminConsole();
             }
             else if(input.equals("4")) {
-                viewAuthorsM1Patient(connection);
+                viewAuthorsMore1Patient(connection);
                 adminConsole();
             }
             else {
