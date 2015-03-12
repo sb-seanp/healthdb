@@ -9,7 +9,7 @@ public class Author {
     private String authorFirstName;
     private String authorLastName;
 
-    public Author(String id, String title, String firstName, String lastName, String role) {
+    public Author(String id, String title, String firstName, String lastName) {
         this.authorId = id;
         this.authorTitle = title;
         this.authorFirstName = firstName;
@@ -47,4 +47,8 @@ public class Author {
     public void setAuthorLastName(String authorLastName) {
         this.authorLastName = authorLastName;
     }
+
+
+
+
 }

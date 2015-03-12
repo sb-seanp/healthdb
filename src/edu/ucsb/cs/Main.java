@@ -11,8 +11,8 @@ import java.util.Date;
 public class Main {
 
     public static void main(String[] args) {
-        initDb("healthmessagesexchange2", "HealthInformationSystem", "messages");
-//        initDb("healthmessagesexchange3", "HealthInformationSystem", "messages2");
+        initDb("healthmessagesexchange3", "HealthInformationSystem", "messages");
+        initDb("healthmessagesexchange3", "HealthInformationSystem", "messages2");
         displayMenu();
     }
 
@@ -59,7 +59,7 @@ public class Main {
         System.out.println("1: View patient medical record.");
         System.out.println("2: View authors assigned to patient.");
         System.out.println("3: View patient guardian information.");
-        System.out.println("4: View patient plan.");
+        System.out.println("4: View patient plans.");
         System.out.println("5: View patient allergies.");
         System.out.println("6: View patient lab test reports.");
         System.out.println("7: Edit patient plan.");
@@ -119,7 +119,7 @@ public class Main {
         return null;
     }
 
-    public static void viewPlan(Connection db, String patientId) {
+    public static void viewPlans(Connection db, String patientId) {
         int pid = Integer.parseInt(patientId);
 
         try {
@@ -165,7 +165,9 @@ public class Main {
                 statement.executeUpdate(update);
             } else {
                 System.out.println("Error");
+                System.exit(0);
             }
+            patientConsole();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -191,12 +193,12 @@ public class Main {
             if (input.equals("1")) {
                 System.out.println("Enter first name: ");
                 String name = scan.next();
-                String update = "UPDATE Guardians SET GivenName='" + name + "' WHERE PatientId=" + p.getPatientRole();
+                String update = "UPDATE Guardians SET GivenName='" + name + "' WHERE GuardianNo=" + p.getPatientRole();
                 statement.executeUpdate(update);
             } else if (input.equals("2")) {
                 System.out.println("Enter last name: ");
                 String name = scan.next();
-                String update = "UPDATE Guardians SET FamilyName='" + name + "' WHERE PatientId=" + p.getPatientRole();
+                String update = "UPDATE Guardians SET FamilyName='" + name + "' WHERE GuardianNo=" + p.getPatientRole();
                 statement.executeUpdate(update);
             }
             // edit family name
@@ -256,12 +258,12 @@ public class Main {
             if (input.equals("1")) {
                 System.out.println("Enter activity: ");
                 String temp = scan.next();
-                String update = "UPDATE Plans SET Activity='" + temp + "' WHERE Activity=" + planId;
+                String update = "UPDATE Plans SET Activity='" + temp + "' WHERE PlanId=" + planId;
                 statement.executeUpdate(update);
             } else if (input.equals("2")) {
                 System.out.println("Enter activity time: ");
                 String temp = scan.next();
-                String update = "UPDATE Plans SET ActivityTime='" + temp + "' WHERE ActivityTime=" + planId;
+                String update = "UPDATE Plans SET ActivityTime='" + temp + "' WHERE PlanId=" + planId;
                 statement.executeUpdate(update);
             } else {
                 System.out.println("Error");
@@ -271,7 +273,7 @@ public class Main {
         }
     }
 
-    public static void viewPatientRecord(Connection db, Patient p) {
+    public static void editPatientAllergy(Connection db, Patient p) {
 
     }
 
@@ -463,19 +465,43 @@ public class Main {
 
                 // Author
                 if(authorId != null) {
-                    Author author = new Author(authorId, authorTitle, authorFirstName, authorLastName,
-                            participatingRole);
+                    //Check if the author already exists
+                    Author author = new Author(authorId, authorTitle, authorFirstName, authorLastName);
 
-                    PreparedStatement authorSt = destDb.prepareStatement(
-                            "INSERT INTO Authors " + "(AuthorId, AuthorTitle, AuthorFirstName, AuthorLastName) " + "VALUES(?, ?, ?, ?)"
+                    ResultSet exists;
+
+                    statement  = destDb.createStatement();
+                    exists = statement.executeQuery("select * from Authors where AuthorId='" + author.getAuthorId() +
+                            "' LIMIT 1");
+
+
+                    PreparedStatement authorSt;
+                    if(!exists.next()) {
+
+                        authorSt = destDb.prepareStatement(
+                                "INSERT INTO Authors " + "(AuthorId, AuthorTitle, AuthorFirstName, AuthorLastName) " + "VALUES(?, ?, ?, ?)"
+                        );
+
+                        authorSt.setString(1, author.getAuthorId());
+                        authorSt.setString(2, author.getAuthorTitle());
+                        authorSt.setString(3, author.getAuthorFirstName());
+                        authorSt.setString(4, author.getAuthorLastName());
+
+                        authorSt.executeUpdate();
+                    }
+
+
+                    authorSt = destDb.prepareStatement(
+                            "INSERT INTO AuthorsPatients (PatientId, AuthorId, ParticipatingRole) VALUES (?,?,?)"
                     );
 
-                    authorSt.setString(1, author.getAuthorId());
-                    authorSt.setString(2, author.getAuthorTitle());
-                    authorSt.setString(3, author.getAuthorFirstName());
-                    authorSt.setString(4, author.getAuthorLastName());
+                    authorSt.setInt(1, Integer.parseInt(patientId));
+                    authorSt.setString(2, author.getAuthorId());
+                    authorSt.setString(3, participatingRole);
 
                     authorSt.executeUpdate();
+
+
                 }
 
 
@@ -607,7 +633,7 @@ public class Main {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = null;
 
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/HealthInformationSystem?user=root%password=");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/HealthInformationSystem?user=root&password=");
 
             String input;
             System.out.println("What would you like to do? ");
@@ -617,6 +643,13 @@ public class Main {
             String patientId = con.next();
             Patient p = getPatientObject(connection, patientId);
             if(input.equals("1")) {
+                editPatientPlan(connection, p);
+            }
+            else if(input.equals("4")) {
+                viewPlans(connection, patientId);
+                doctorConsole();
+            }
+            else if(input.equals("7")) {
                 editPatientPlan(connection, p);
             }
             else {
@@ -637,7 +670,7 @@ public class Main {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = null;
 
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/HealthInformationSystem?user=root%password=");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/HealthInformationSystem?user=root&password=");
 
             System.out.println("USER: PATIENT");
             System.out.println("Enter user ID: ");

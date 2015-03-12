@@ -1,0 +1,3 @@
+SELECT PatientId FROM Patients WHERE PatientId IN (SELECT Patients.PatientId FROM Patients JOIN Allergies ON Patients.PatientId=Allergies.PatientId GROUP BY Patients.PatientId HAVING COUNT(Patients.PatientId) > 1);
+ SELECT COUNT(Substance) FROM Allergies WHERE Substance='Codeine';
+SELECT distinct AuthorId FROM AuthorsPatients WHERE AuthorId IN (SELECT AuthorId From AuthorsPatients GROUP BY AuthorId HAVING COUNT(AuthorId) > 1);
