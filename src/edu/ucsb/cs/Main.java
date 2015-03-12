@@ -745,6 +745,7 @@ public class Main {
             }
             else {
                 System.out.println("Error");
+                displayMenu();
             }
 
         } catch (ClassNotFoundException e) {
@@ -784,6 +785,7 @@ public class Main {
             }
             else {
                 System.out.println("Error");
+                displayMenu();
             }
 
         } catch (ClassNotFoundException e) {
@@ -828,6 +830,7 @@ public class Main {
             }
             else {
                 System.out.println("Error");
+                displayMenu();
             }
 
         } catch (ClassNotFoundException e) {
