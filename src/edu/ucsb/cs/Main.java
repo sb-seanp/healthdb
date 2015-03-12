@@ -45,6 +45,7 @@ public class Main {
         }
         else {
             System.out.println("Error; exiting");
+            return;
         }
     }
 
@@ -170,7 +171,7 @@ public class Main {
         }
     }
 
-    public static void viewNumberPatientsMore1Allergy(Connection db) {
+    public static void viewPatientsMore1Allergy(Connection db) {
         try {
             Statement statement = db.createStatement();
             String temp = "SELECT PatientId FROM Patients WHERE PatientId IN (SELECT Patients.PatientId FROM Patients JOIN Allergies ON Patients.PatientId=Allergies.PatientId GROUP BY Patients.PatientId HAVING COUNT(Patients.PatientId) > 1);";
@@ -178,6 +179,20 @@ public class Main {
 
             while(rSet.next()) {
                 System.out.println(rSet.getString("PatientId"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void viewPatientsSurgery(Connection db) {
+        try {
+            Statement statement = db.createStatement();
+            String temp = "SELECT PlanId FROM Plans WHERE ActivityTime LIKE '3/12/2015%';";
+            ResultSet rSet = statement.executeQuery(temp);
+
+            while(rSet.next()) {
+                System.out.println(rSet.getString("PlanId"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -736,14 +751,16 @@ public class Main {
                 adminConsole();
             }
             else if(input.equals("2")) {
-                viewNumberPatientsMore1Allergy(connection);
+                viewPatientsMore1Allergy(connection);
                 adminConsole();
             }
-            else if(input.equals("4")) {
+            else if (input.equals("3")) {
+                viewPatientsSurgery(connection);
+                adminConsole();
+            } else if (input.equals("4")) {
                 viewAuthorsMore1Patient(connection);
                 adminConsole();
-            }
-            else {
+            } else {
                 System.out.println("Error");
                 displayMenu();
             }
