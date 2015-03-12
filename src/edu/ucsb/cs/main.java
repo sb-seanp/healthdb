@@ -45,6 +45,26 @@ public class main {
         }
     }
 
+    public void displayAdminMenu() {
+        System.out.println("1: View number of patients for each type of allergy.");
+        System.out.println("2: List patients with more than one allergy.");
+        System.out.println("3: List patients who have a plan for surgery today.");
+        System.out.println("4: View authors with more than one patient.");
+        System.out.println("0: Exit");
+    }
+
+    public void displayDoctorMenu() {
+        System.out.println("1: View patient medical record.");
+        System.out.println("2: View authors assigned to patient.");
+        System.out.println("3: View patient guardian information.");
+        System.out.println("4: View patient plan.");
+        System.out.println("5: View patient allergies.");
+        System.out.println("6: View patient lab test reports.");
+        System.out.println("7: Edit patient plan.");
+        System.out.println("8: Edit patient allergy information.");
+        System.out.println("0: Exit");
+    }
+
     public void displayPatientMenu() {
         System.out.println("1: View my medical record.");
         System.out.println("2: View my author's information.");
@@ -54,12 +74,17 @@ public class main {
         System.out.println("6: View my medical plans.");
         System.out.println("7: Edit my information.");
         System.out.println("8: Edit my guardian's information.");
+        System.out.println("0: Exit");
     }
 
     // Get the current date and time for whatever needs it
     public String getDate() {
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
         return date;
+    }
+
+    public void viewPatientRecord(Connection db, Patient p) {
+        
     }
 
     // Read everything from the input file and put it in the database
