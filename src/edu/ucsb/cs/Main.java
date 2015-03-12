@@ -11,8 +11,9 @@ import java.util.Date;
 public class Main {
 
     public static void main(String[] args) {
-        initDb("healthmessagesexchange3", "HealthInformationSystem", "messages");
-        initDb("healthmessagesexchange3", "HealthInformationSystem", "messages2");
+        //initDb("healthmessagesexchange2", "HealthInformationSystem", "messages");
+        //initDb("healthmessagesexchange3", "HealthInformationSystem", "messages");
+        //initDb("healthmessagesexchange3", "HealthInformationSystem", "messages2");
         displayMenu();
     }
 
@@ -119,6 +120,21 @@ public class Main {
         return null;
     }
 
+    public static void viewPatientInfo(Connection db, Patient p) {
+        try {
+            Statement statement = db.createStatement();
+            ResultSet rSet = statement.executeQuery("SELECT * FROM Patients WHERE PatientId=" + p.getPatientId());
+            rSet.next();
+
+            System.out.println("First name: " + rSet.getString("GivenName"));
+            System.out.println("Last name: " + rSet.getString("FamilyName"));
+            System.out.println("Birth: " + rSet.getString("Birthtime"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static void viewPlans(Connection db, String patientId) {
         int pid = Integer.parseInt(patientId);
 
@@ -130,6 +146,52 @@ public class Main {
                 System.out.println("ID: " + rSet.getString("PlanId"));
                 System.out.println("Activity: " + rSet.getString("Activity"));
                 System.out.println("Activity time: " + rSet.getString("ActivityTime"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void viewNumberPatientsAllergy(Connection db) {
+        try {
+            Statement statement = db.createStatement();
+
+            Scanner scan = new Scanner(System.in);
+            System.out.println("What substance?");
+            String input = scan.next();
+            String temp = "SELECT COUNT(Substance) FROM Allergies WHERE Substance='" + input +"';";
+            ResultSet rSet = statement.executeQuery(temp);
+
+            while(rSet.next()) {
+                System.out.println(rSet.getString("COUNT(Substance)"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void viewNumberPatientsM1Allergy(Connection db) {
+        try {
+            Statement statement = db.createStatement();
+            String temp = "SELECT PatientId FROM Patients WHERE PatientId IN (SELECT Patients.PatientId FROM Patients JOIN Allergies ON Patients.PatientId=Allergies.PatientId GROUP BY Patients.PatientId HAVING COUNT(Patients.PatientId) > 1);";
+            ResultSet rSet = statement.executeQuery(temp);
+
+            while(rSet.next()) {
+                System.out.println(rSet.getString("PatientId"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void viewAuthorsM1Patient(Connection db) {
+        try {
+            Statement statement = db.createStatement();
+            String temp = "SELECT distinct AuthorId FROM AuthorsPatients WHERE AuthorId IN (SELECT AuthorId From AuthorsPatients GROUP BY AuthorId HAVING COUNT(AuthorId) > 1);";
+            ResultSet rSet = statement.executeQuery(temp);
+
+            while(rSet.next()) {
+                System.out.println(rSet.getString("AuthorId"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -274,7 +336,40 @@ public class Main {
     }
 
     public static void editPatientAllergy(Connection db, Patient p) {
+        try {
+            Statement statement = db.createStatement();
 
+            Scanner scan = new Scanner(System.in);
+            System.out.println("Enter number of field you want to edit.");
+            System.out.println("1: Substance.");
+            System.out.println("2: Reaction.");
+            System.out.println("3: Status.");
+            String input = scan.next();
+
+            if (input.equals("1")) {
+                System.out.println("Enter substance: ");
+                String temp = scan.next();
+                String update = "UPDATE Allergies SET Substance='" + temp + "' WHERE PatientId=" + p.getPatientId();
+                statement.executeUpdate(update);
+            }
+            else if (input.equals("2")) {
+                System.out.println("Enter reaction: ");
+                String temp = scan.next();
+                String update = "UPDATE Allergies SET Reaction='" + temp + "' WHERE PatientId=" + p.getPatientId();
+                statement.executeUpdate(update);
+            }
+            else if (input.equals("3")) {
+                System.out.println("Enter status: ");
+                String temp = scan.next();
+                String update = "UPDATE Allergies SET Status='" + temp + "' WHERE PatientId=" + p.getPatientId();
+                statement.executeUpdate(update);
+            }
+            else {
+                System.out.println("Error");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // Read everything from the input file and put it in the database
@@ -623,7 +718,40 @@ public class Main {
     }
 
     public static void adminConsole() {
-        return;
+        try {
+            Scanner con = new Scanner(System.in);
+
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = null;
+
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/HealthInformationSystem?user=root&password=");
+
+            String input;
+            System.out.println("What would you like to do? ");
+            displayAdminMenu();
+            input = con.next();
+            //Patient p = getPatientObject(connection, patientId);
+            if(input.equals("1")) {
+                viewNumberPatientsAllergy(connection);
+                adminConsole();
+            }
+            else if(input.equals("2")) {
+                viewNumberPatientsM1Allergy(connection);
+                adminConsole();
+            }
+            else if(input.equals("4")) {
+                viewAuthorsM1Patient(connection);
+                adminConsole();
+            }
+            else {
+                System.out.println("Error");
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void doctorConsole() {
@@ -642,15 +770,17 @@ public class Main {
             System.out.println("What patient would you like to assess? Enter id.");
             String patientId = con.next();
             Patient p = getPatientObject(connection, patientId);
-            if(input.equals("1")) {
-                editPatientPlan(connection, p);
-            }
-            else if(input.equals("4")) {
+            if(input.equals("4")) {
                 viewPlans(connection, patientId);
                 doctorConsole();
             }
             else if(input.equals("7")) {
                 editPatientPlan(connection, p);
+                doctorConsole();
+            }
+            else if(input.equals("8")) {
+                editPatientAllergy(connection, p);
+                doctorConsole();
             }
             else {
                 System.out.println("Error");
@@ -684,11 +814,17 @@ public class Main {
             displayPatientMenu();
 
             input = con.next();
-            if(input.equals("7")) {
+            if (input.equals("1")) {
+                viewPatientInfo(connection, p);
+                patientConsole();
+            }
+            else if(input.equals("7")) {
                 editPatientInfo(connection, p);
+                patientConsole();
             }
             else if(input.equals("8")) {
                 editGuardianInfo(connection, p);
+                patientConsole();
             }
             else {
                 System.out.println("Error");
