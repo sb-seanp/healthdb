@@ -17,14 +17,14 @@ public class Guardian {
     public Guardian(int no, String givenName, String familyName, String phone, String address, String city, String
             state, int zip, String relationship) {
         guardianNo = no;
-        givenName = givenName;
-        familyName = familyName;
-        phone = phone;
-        address = address;
-        city = city;
-        state = state;
-        zip = zip;
-        relationship = relationship;
+        this.givenName = givenName;
+        this.familyName = familyName;
+        this.phone = phone;
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.relationship = relationship;
     }
 
     public int getGuardianNo() {

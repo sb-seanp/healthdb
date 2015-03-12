@@ -9,11 +9,13 @@ public class Plan {
     private int planId;
     private String activity;
     private String date;
+    private String activity_time;
 
-    public Plan(int id, String activity, String date) {
+    public Plan(int id, String activity, String date, String at) {
         planId = id;
-        activity = activity;
-        date = date;
+        this.activity = activity;
+        this.date = date;
+        this.activity_time = at;
     }
 
     public int getPlanId() {
@@ -38,5 +40,13 @@ public class Plan {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getActivity_time() {
+        return activity_time;
+    }
+
+    public void setActivity_time(String activity_time) {
+        this.activity_time = activity_time;
     }
 }

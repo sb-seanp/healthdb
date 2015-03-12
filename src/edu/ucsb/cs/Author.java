@@ -4,23 +4,23 @@ package edu.ucsb.cs;
  * Created by sean on 3/3/15.
  */
 public class Author {
-    private int authorId;
+    private String authorId;
     private String authorTitle;
     private String authorFirstName;
     private String authorLastName;
 
-    public Author(int id, String title, String firstName, String lastName, String role) {
+    public Author(String id, String title, String firstName, String lastName, String role) {
         this.authorId = id;
         this.authorTitle = title;
         this.authorFirstName = firstName;
         this.authorLastName = lastName;
     }
 
-    public int getAuthorId() {
+    public String getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(int authorId) {
+    public void setAuthorId(String authorId) {
         this.authorId = authorId;
     }
 

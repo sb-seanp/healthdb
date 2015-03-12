@@ -12,10 +12,10 @@ public class InsuranceCompany {
 
     public InsuranceCompany(int id, String name, String policyHolder, String policyType, String purpose) {
         payerId = id;
-        name = name;
-        policyHolder = policyHolder;
-        policyType = policyType;
-        purpose = purpose;
+        this.name = name;
+        this.policyHolder = policyHolder;
+        this.policyType = policyType;
+        this.purpose = purpose;
     }
 
     public int getPayerId() {

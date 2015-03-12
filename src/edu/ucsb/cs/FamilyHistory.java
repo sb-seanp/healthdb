@@ -8,12 +8,14 @@ public class FamilyHistory {
     private String relationship;
     private int age;
     private String diagnosis;
+    private int patientId;
 
-    public FamilyHistory(int id, String relationship, int age, String diagnosis) {
+    public FamilyHistory(int id, String relationship, int age, String diagnosis, int patientId) {
         relativeId = id;
-        relationship = relationship;
-        age = age;
-        diagnosis = diagnosis;
+        this.relationship = relationship;
+        this.age = age;
+        this.diagnosis = diagnosis;
+        this.patientId = patientId;
     }
 
     public int getRelativeId() {
@@ -46,5 +48,13 @@ public class FamilyHistory {
 
     public void setDiagnosis(String diagnosis) {
         this.diagnosis = diagnosis;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
     }
 }

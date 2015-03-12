@@ -11,9 +11,9 @@ public class Allergies {
 
     public Allergies(int id, String substance, String reaction, String status) {
         patientId = id;
-        substance = substance;
-        reaction = reaction;
-        status = status;
+        this.substance = substance;
+        this.reaction = reaction;
+        this.status = status;
     }
 
     public int getPatientId() {
