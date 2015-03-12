@@ -8,12 +8,14 @@ import java.util.Date;
 public class Plan {
     private int planId;
     private String activity;
-    private String date;
+    private Date date;
+    private Date activityTime;
 
-    public Plan(int id, String activity, String date) {
+    public Plan(int id, String activity, Date date, Date activityTime) {
         planId = id;
         activity = activity;
         date = date;
+        activityTime = activityTime;
     }
 
     public int getPlanId() {
@@ -32,11 +34,19 @@ public class Plan {
         this.activity = activity;
     }
 
-    public String getDate() {
+    public Date getActivityTime() {
+        return activityTime;
+    }
+
+    public void setActivityTime(Date activityTime) {
+        this.activityTime = activityTime;
+    }
+
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

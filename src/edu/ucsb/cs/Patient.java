@@ -1,5 +1,7 @@
 package edu.ucsb.cs;
 
+import java.util.Date;
+
 /**
  * Created by sean on 3/3/15.
  */
@@ -13,11 +15,11 @@ public class Patient {
     private String gender;
     private String birthtime;
     private String providerId;
-    private String creationDate;
+    private Date creationDate;
     private int payerId;
 
     public Patient(int id, String patientRole, String givenName, String familyName, String suffix, String gender, String
-            birthtime, String providerId, String creationDate, int payerId) {
+            birthtime, String providerId, Date creationDate, int payerId) {
         this.patientId = id;
         this.patientRole = patientRole;
         this.givenName = givenName;
@@ -94,11 +96,11 @@ public class Patient {
         this.providerId = providerId;
     }
 
-    public String getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 

@@ -8,13 +8,13 @@ import java.util.Date;
 public class LabTestReport {
     private int labTestResultId;
     private int patientVisitId;
-    private String labTestPerformedDate;
+    private Date labTestPerformedDate;
     private String labTestType;
     private int testResultValue;
     private String referenceRangeHigh;
     private String referenceRangeLow;
 
-    public LabTestReport(int labId, int patientId, String testDate, String type, int value, String high, String low) {
+    public LabTestReport(int labId, int patientId, Date testDate, String type, int value, String high, String low) {
         labTestResultId = labId;
         patientVisitId = patientId;
         labTestPerformedDate = testDate;
@@ -40,11 +40,11 @@ public class LabTestReport {
         this.patientVisitId = patientVisitId;
     }
 
-    public String getLabTestPerformedDate() {
+    public Date getLabTestPerformedDate() {
         return labTestPerformedDate;
     }
 
-    public void setLabTestPerformedDate(String labTestPerformedDate) {
+    public void setLabTestPerformedDate(Date labTestPerformedDate) {
         this.labTestPerformedDate = labTestPerformedDate;
     }
 

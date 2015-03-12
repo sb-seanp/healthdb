@@ -3,7 +3,7 @@ package edu.ucsb.cs;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Created by sean on 3/4/15.
@@ -78,8 +78,8 @@ public class main {
     }
 
     // Get the current date and time for whatever needs it
-    public String getDate() {
-        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
+    public java.util.Date getDate() {
+        java.util.Date date = new java.util.Date();
         return date;
     }
 
@@ -186,9 +186,10 @@ public class main {
                 String planId           = resultSet.getString("PlanId");
                 String activity         = resultSet.getString("Activity");
                 String scheduledDate    = resultSet.getString("ScheduledDate");
+                String activityTime     = resultSet.getString("ActivityTime");
 
                 // Get missing info
-                String currentDate  = getDate();
+                java.util.Date currentDate  = getDate();
                 String suffix       = "";
                 String gender       = "";
                 String patientRole  = "";
@@ -200,7 +201,7 @@ public class main {
                         suffix, gender, birthTime, providerId, currentDate, Integer.parseInt(payerId));
 
                 PreparedStatement patientSt = destDb.prepareStatement(
-                        "INSERT INTO Patient " + "(PatientId, PatientRole, GivenName, FamilyName, Suffix, Gender, " +
+                        "INSERT INTO Patients " + "(PatientId, PatientRole, GivenName, FamilyName, Suffix, Gender, " +
                                 "Birthtime, ProviderId, xmlHealthCreation, PayerId) " + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                 );
 
@@ -212,7 +213,7 @@ public class main {
                 patientSt.setString(6, patient.getGender());
                 patientSt.setString(7, patient.getBirthtime());
                 patientSt.setString(8, patient.getProviderId());
-                patientSt.setString(9, patient.getCreationDate());
+                patientSt.setDate(9, new java.sql.Date(patient.getCreationDate().getTime()) );
                 patientSt.setInt(10, patient.getPayerId());
 
                 patientSt.executeUpdate();
@@ -222,7 +223,7 @@ public class main {
                         city, state, Integer.parseInt(zip), relationship);
 
                 PreparedStatement guardianSt = destDb.prepareStatement(
-                        "INSERT INTO Guardian " + "(GuardianNo, GivenName, FamilyName, Phone, Address, City, State, Zip) "
+                        "INSERT INTO Guardians " + "(GuardianNo, GivenName, FamilyName, Phone, Address, City, State, Zip) "
                                 + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)"
                 );
 
@@ -242,7 +243,7 @@ public class main {
                         participatingRole);
 
                 PreparedStatement authorSt = destDb.prepareStatement(
-                        "INSERT INTO Author " + "(AuthorId, AuthorTitle, AuthorFirstName, AuthorLastName) " + "VALUES(?, ?, ?, ?)"
+                        "INSERT INTO Authors " + "(AuthorId, AuthorTitle, AuthorFirstName, AuthorLastName) " + "VALUES(?, ?, ?, ?)"
                 );
 
                 authorSt.setInt(1, author.getAuthorId());
@@ -257,7 +258,7 @@ public class main {
                         purpose);
 
                 PreparedStatement icSt = destDb.prepareStatement(
-                        "INSERT INTO InsuranceCompany " + "(PayerId, Name, Purpose, PolicyType, PolicyHolder) " + "VALUES(?, ?, ?, ?, ?)"
+                        "INSERT INTO InsuranceCompanies " + "(PayerId, Name, Purpose, PolicyType, PolicyHolder) " + "VALUES(?, ?, ?, ?, ?)"
                 );
 
                 icSt.setInt(1, ic.getPayerId());
@@ -273,7 +274,7 @@ public class main {
                         (age), diagnosis);
 
                 PreparedStatement famSt = destDb.prepareStatement(
-                        "INSERT INTO FamilyHistory " + "(id, Relationship, Age, Diagnosis) " + "VALUES(?,?,?," +
+                        "INSERT INTO FamilyHistory " + "(id, Relationship, Age, Diagnosis, PatientId) " + "VALUES(?,?,?," +
                                 "?)"
                 );
 
@@ -281,6 +282,7 @@ public class main {
                 famSt.setString(2, fam.getRelationship());
                 famSt.setInt(3, fam.getAge());
                 famSt.setString(4, fam.getDiagnosis());
+                famSt.setInt(5, fam.getPatientId());
 
                 famSt.executeUpdate();
 
@@ -300,17 +302,17 @@ public class main {
 
                 // Lab Test Report
                 LabTestReport ltr = new LabTestReport(Integer.parseInt(labTestResultId), Integer.parseInt
-                        (patientVisitId), labTestPerformedDate, labTestType, Integer.parseInt(testResultValue),
+                        (patientVisitId), new java.util.Date(labTestPerformedDate), labTestType, Integer.parseInt(testResultValue),
                         referenceRangeHigh, referenceRangeLow);
 
                 PreparedStatement ltrSt = destDb.prepareStatement(
-                        "INSERT INTO LabTestReport " + "(LabTestResultId, PatientVisitId, LabTestPerformedDate, " +
+                        "INSERT INTO LabTestReports " + "(LabTestResultId, PatientVisitId, LabTestPerformedDate, " +
                                 "LabTestType, TestResultValue, ReferenceRangeHigh, ReferenceRangeLow) " + "VALUES(?,?,?,?,?,?,?)"
                 );
 
                 ltrSt.setInt(1, ltr.getLabTestResultId());
                 ltrSt.setInt(2, ltr.getPatientVisitId());
-                ltrSt.setString(3, ltr.getLabTestPerformedDate());
+                ltrSt.setDate(3, new java.sql.Date(ltr.getLabTestPerformedDate().getTime()));
                 ltrSt.setString(4, ltr.getLabTestType());
                 ltrSt.setInt(5, ltr.getLabTestResultId());
                 ltrSt.setString(6, ltr.getReferenceRangeHigh());
@@ -319,15 +321,16 @@ public class main {
                 ltrSt.executeUpdate();
 
                 // Plan
-                Plan plan = new Plan(Integer.parseInt(planId), activity, scheduledDate);
+                Plan plan = new Plan(Integer.parseInt(planId), activity, new java.util.Date(scheduledDate),  new java.util.Date(scheduledDate));
 
                 PreparedStatement planSt = destDb.prepareStatement(
-                        "INSERT INTO Plan " + "(PlanId, Activity, ScheduledDate) " + "VALUES(?,?,?)"
+                        "INSERT INTO Plans " + "(PlanId, Activity, ActivityTime, ScheduledDate) " + "VALUES(?,?,?)"
                 );
 
                 planSt.setInt(1, plan.getPlanId());
                 planSt.setString(2, plan.getActivity());
-                planSt.setString(3, plan.getDate());
+                planSt.setDate(3, new java.sql.Date(plan.getActivityTime().getTime()));
+                planSt.setDate(4, new java.sql.Date(plan.getDate().getTime()) );
 
                 planSt.executeUpdate();
             }
