@@ -85,6 +85,192 @@ public class Main {
         return date;
     }
 
+    public static Patient getPatientObject(Connection db, String patientId) {
+        try {
+            int pid = Integer.parseInt(patientId);
+            Statement statement = db.createStatement();
+            ResultSet rSet = statement.executeQuery("SELECT * FROM Patients WHERE patientId=" + patientId);
+
+            rSet.next();
+            Patient p = new Patient(pid, rSet.getString("PatientRole"), rSet.getString("GivenName"),
+                    rSet.getString("FamilyName"), rSet.getString("Suffix"), rSet.getString("Gender"),
+                    rSet.getString("Birthtime"), rSet.getString("ProviderId"), rSet.getString("xmlHealthCreation"),
+                    rSet.getInt("PayerId"));
+            return p;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Plan getPlanObject(Connection db, String planId) {
+        try {
+            Statement statement = db.createStatement();
+            ResultSet rSet = statement.executeQuery("SELECT * FROM Plans WHERE PlanId=" + planId);
+
+            rSet.next();
+            Plan p = new Plan(Integer.parseInt(planId), rSet.getString("Activity"), rSet.getString("CreatedOn"), rSet
+                    .getString
+                            ("ActivityTime"));
+            return p;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void viewPlan(Connection db, String patientId) {
+        int pid = Integer.parseInt(patientId);
+
+        try {
+            Statement statement = db.createStatement();
+            ResultSet rSet = statement.executeQuery("SELECT * FROM Plans WHERE patientId=" + patientId);
+
+            while (rSet.next()) {
+                System.out.println("ID: " + rSet.getString("PlanId"));
+                System.out.println("Activity: " + rSet.getString("Activity"));
+                System.out.println("Activity time: " + rSet.getString("ActivityTime"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editPatientInfo(Connection db, Patient p) {
+
+        try {
+            Statement statement = db.createStatement();
+
+            Scanner scan = new Scanner(System.in);
+            System.out.println("Enter number of field you want to edit.");
+            System.out.println("1: First name.");
+            System.out.println("2: Last name.");
+            System.out.println("3: Suffix.");
+            String input = scan.next();
+
+            if (input.equals("1")) {
+                System.out.println("Enter first name: ");
+                String name = scan.next();
+                String update = "UPDATE Patients SET GivenName='" + name + "' WHERE PatientId=" + p.getPatientId();
+                statement.executeUpdate(update);
+            } else if (input.equals("2")) {
+                System.out.println("Enter last name: ");
+                String name = scan.next();
+                String update = "UPDATE Patients SET FamilyName='" + name + "' WHERE PatientId=" + p.getPatientId();
+                statement.executeUpdate(update);
+            } else if (input.equals("3")) {
+                System.out.println("Enter suffix: ");
+                String suf = scan.next();
+                String update = "UPDATE Patients SET Suffix='" + suf + "' WHERE PatientId=" + p.getPatientId();
+                statement.executeUpdate(update);
+            } else {
+                System.out.println("Error");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editGuardianInfo(Connection db, Patient p) {
+
+        try {
+            Statement statement = db.createStatement();
+
+            Scanner scan = new Scanner(System.in);
+            System.out.println("Enter number of field you want to edit.");
+            System.out.println("1: First name.");
+            System.out.println("2: Last name.");
+            System.out.println("3: Phone.");
+            System.out.println("4: Address.");
+            System.out.println("5: City.");
+            System.out.println("6: State.");
+            System.out.println("7: Zip.");
+            System.out.println("8: Relationship.");
+            String input = scan.next();
+
+            if (input.equals("1")) {
+                System.out.println("Enter first name: ");
+                String name = scan.next();
+                String update = "UPDATE Guardians SET GivenName='" + name + "' WHERE PatientId=" + p.getPatientRole();
+                statement.executeUpdate(update);
+            } else if (input.equals("2")) {
+                System.out.println("Enter last name: ");
+                String name = scan.next();
+                String update = "UPDATE Guardians SET FamilyName='" + name + "' WHERE PatientId=" + p.getPatientRole();
+                statement.executeUpdate(update);
+            }
+            // edit family name
+            else if (input.equals("3")) {
+                System.out.println("Enter phone: ");
+                String phone = scan.next();
+                String update = "UPDATE Guardians SET Phone='" + phone + "' WHERE PatientId=" + p.getPatientRole();
+                statement.executeUpdate(update);
+            }
+            // edit given name
+            else if (input.equals("4")) {
+                System.out.println("Enter address: ");
+                String temp = scan.next();
+                String update = "UPDATE Guardians SET Address='" + temp + "' WHERE PatientId=" + p.getPatientRole();
+                statement.executeUpdate(update);
+            } else if (input.equals("5")) {
+                System.out.println("Enter city: ");
+                String temp = scan.next();
+                String update = "UPDATE Guardians SET City='" + temp + "' WHERE PatientId=" + p.getPatientRole();
+                statement.executeUpdate(update);
+            } else if (input.equals("6")) {
+                System.out.println("Enter state: ");
+                String temp = scan.next();
+                String update = "UPDATE Guardians SET State='" + temp + "' WHERE PatientId=" + p.getPatientRole();
+                statement.executeUpdate(update);
+            } else if (input.equals("7")) {
+                System.out.println("Enter zip: ");
+                String temp = scan.next();
+                String update = "UPDATE Guardians SET Zip=" + temp + " WHERE PatientId=" + p.getPatientRole();
+                statement.executeUpdate(update);
+            } else if (input.equals("8")) {
+                System.out.println("Enter relationship: ");
+                String temp = scan.next();
+                String update = "UPDATE Guardians SET Relationship='" + temp + "' WHERE PatientId=" + p.getPatientRole();
+                statement.executeUpdate(update);
+            } else {
+                System.out.println("Error");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editPatientPlan(Connection db, Patient p) {
+
+        try {
+            Statement statement = db.createStatement();
+
+            Scanner scan = new Scanner(System.in);
+            System.out.println("What is the plan id of the plan you would like to edit? ");
+            String planId = scan.next();
+            System.out.println("Enter number of field you want to edit.");
+            System.out.println("1: Activity.");
+            System.out.println("2: Activity time.");
+            String input = scan.next();
+
+            if (input.equals("1")) {
+                System.out.println("Enter activity: ");
+                String temp = scan.next();
+                String update = "UPDATE Plans SET Activity='" + temp + "' WHERE Activity=" + planId;
+                statement.executeUpdate(update);
+            } else if (input.equals("2")) {
+                System.out.println("Enter activity time: ");
+                String temp = scan.next();
+                String update = "UPDATE Plans SET ActivityTime='" + temp + "' WHERE ActivityTime=" + planId;
+                statement.executeUpdate(update);
+            } else {
+                System.out.println("Error");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void viewPatientRecord(Connection db, Patient p) {
 
     }
@@ -415,7 +601,33 @@ public class Main {
     }
 
     public static void doctorConsole() {
-        return;
+        try {
+            Scanner con = new Scanner(System.in);
+
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = null;
+
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/HealthInformationSystem?user=root%password=");
+
+            String input;
+            System.out.println("What would you like to do? ");
+            displayDoctorMenu();
+            input = con.next();
+            System.out.println("What patient would you like to assess? Enter id.");
+            String patientId = con.next();
+            Patient p = getPatientObject(connection, patientId);
+            if(input.equals("1")) {
+                editPatientPlan(connection, p);
+            }
+            else {
+                System.out.println("Error");
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void patientConsole() {
@@ -432,9 +644,22 @@ public class Main {
             String patientId;
             patientId = con.next();
 
+            Patient p = getPatientObject(connection, patientId);
+
             String input;
             System.out.println("What would you like to do?");
             displayPatientMenu();
+
+            input = con.next();
+            if(input.equals("7")) {
+                editPatientInfo(connection, p);
+            }
+            else if(input.equals("8")) {
+                editGuardianInfo(connection, p);
+            }
+            else {
+                System.out.println("Error");
+            }
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
